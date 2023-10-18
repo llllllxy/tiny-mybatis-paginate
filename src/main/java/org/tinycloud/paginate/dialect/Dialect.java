@@ -2,6 +2,15 @@ package org.tinycloud.paginate.dialect;
 
 import org.tinycloud.paginate.Page;
 
+
+/**
+ * <p>
+ *    数据库方言接口声明
+ * </p>
+ *
+ * @author liuxingyu01
+ * @since 2023-10-18
+ **/
 public interface Dialect {
 
     /**

@@ -2,6 +2,14 @@ package org.tinycloud.paginate.dialect;
 
 import org.tinycloud.paginate.dialect.support.*;
 
+/**
+ * <p>
+ *    数据库方言枚举，配合DialectUtils工具类可快速映射对应的方言实现类
+ * </p>
+ *
+ * @author liuxingyu01
+ * @since 2023-10-18
+ **/
 public enum DialectEnum {
     /**
      * MYSQL
@@ -26,7 +34,7 @@ public enum DialectEnum {
     /**
      * H2
      */
-    H2("h2", MySqlDialect.class),
+    H2("h2", H2Dialect.class),
     /**
      * HSQL
      */
