@@ -28,11 +28,12 @@ public class SqlServerDialect extends AbstractDialect {
         StringBuilder sql = new StringBuilder();
         if (pageSize > 0) {
             int offset = (pageNo - 1) * pageSize;
+            int limit = pageSize;
             sql.append(oldSQL);
             sql.append(" OFFSET ");
             sql.append(offset);
             sql.append(" ROWS FETCH NEXT ");
-            sql.append(pageSize);
+            sql.append(limit);
             sql.append(" ROWS ONLY");
         }
         return sql.toString();

@@ -2,9 +2,11 @@ package org.tinycloud.paginate.exception;
 
 
 /**
- * 自定义异常类
+ * <p>
+ *   自定义异常类
+ * </p>
  * @author liuxingyu01
- * @since  2023-07-26-16:49
+ * @since 2023-10-18
  **/
 public class PaginateException extends RuntimeException {
     private static final long serialVersionUID = 5423027429182629901L;
@@ -23,9 +25,8 @@ public class PaginateException extends RuntimeException {
      * cause is not initialized, and may subsequently be initialized by a call
      * to {@link #initCause}.
      *
-     * @param message
-     *            the detail message. The detail message is saved for later
-     *            retrieval by the {@link #getMessage()} method.
+     * @param message the detail message. The detail message is saved for later
+     *                retrieval by the {@link #getMessage()} method.
      */
     public PaginateException(String message) {
         super(message);
@@ -38,14 +39,12 @@ public class PaginateException extends RuntimeException {
      * Note that the detail message associated with {@code cause} is <i>not</i>
      * automatically incorporated in this runtime exception's detail message.
      *
-     * @param message
-     *            the detail message (which is saved for later retrieval by the
-     *            {@link #getMessage()} method).
-     * @param cause
-     *            the cause (which is saved for later retrieval by the
-     *            {@link #getCause()} method). (A <tt>null</tt> value is
-     *            permitted, and indicates that the cause is nonexistent or
-     *            unknown.)
+     * @param message the detail message (which is saved for later retrieval by the
+     *                {@link #getMessage()} method).
+     * @param cause   the cause (which is saved for later retrieval by the
+     *                {@link #getCause()} method). (A <tt>null</tt> value is
+     *                permitted, and indicates that the cause is nonexistent or
+     *                unknown.)
      * @since 1.4
      */
     public PaginateException(String message, Throwable cause) {
@@ -59,11 +58,10 @@ public class PaginateException extends RuntimeException {
      * constructor is useful for runtime exceptions that are little more than
      * wrappers for other throwables.
      *
-     * @param cause
-     *            the cause (which is saved for later retrieval by the
-     *            {@link #getCause()} method). (A <tt>null</tt> value is
-     *            permitted, and indicates that the cause is nonexistent or
-     *            unknown.)
+     * @param cause the cause (which is saved for later retrieval by the
+     *              {@link #getCause()} method). (A <tt>null</tt> value is
+     *              permitted, and indicates that the cause is nonexistent or
+     *              unknown.)
      * @since 1.4
      */
     public PaginateException(Throwable cause) {

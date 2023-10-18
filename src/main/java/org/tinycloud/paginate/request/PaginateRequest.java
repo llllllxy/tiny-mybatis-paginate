@@ -31,6 +31,19 @@ public class PaginateRequest extends AbstractPaginateRequest {
     }
 
     /**
+     * 对外提供的初始化分页请求方法
+     *
+     * @param offset 当前偏移量
+     * @param limit  每页条数
+     * @return 获取分页请求对象实例
+     */
+    public static Paginate in(int offset, int limit) {
+        int pageSize = limit;
+        int pageNumber = offset / limit + 1;
+        return new PaginateRequest(pageNumber, pageSize);
+    }
+
+    /**
      * 执行请求分页方法
      *
      * @param logicFunction 业务逻辑查询方法
