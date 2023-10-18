@@ -50,11 +50,11 @@ public enum DialectEnum {
     /**
      * SQLSERVER
      */
-    SQLSERVER("sqlserver", MySqlDialect.class),
+    SQLSERVER("sqlserver", SqlServerDialect.class),
     /**
      * SqlServer 2005 数据库
      */
-    SQLSERVER_2005("sqlserver_2005", MySqlDialect.class),
+    SQLSERVER_2005("sqlserver_2005", OracleDialect.class),
     /**
      * DM
      */
@@ -155,7 +155,7 @@ public enum DialectEnum {
     /**
      * Informix
      */
-    INFORMIX("informix", MySqlDialect.class),
+    INFORMIX("informix", InforMixDialect.class),
     /**
      * sinodb
      */
@@ -167,7 +167,7 @@ public enum DialectEnum {
     /**
      * greenplum
      */
-    GREENPLUM("greenplum", MySqlDialect.class),
+    GREENPLUM("greenplum", PostgresDialect.class),
     /**
      * UNKNOWN DB
      */
