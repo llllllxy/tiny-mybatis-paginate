@@ -16,6 +16,8 @@ import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.type.TypeHandler;
 import org.apache.ibatis.type.TypeHandlerRegistry;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.tinycloud.paginate.dialect.Dialect;
 import org.tinycloud.paginate.utils.DialectUtils;
 import org.tinycloud.paginate.utils.PageRequestHolder;
@@ -38,6 +40,9 @@ import java.util.Properties;
         @Signature(type = Executor.class, method = "query", args = {MappedStatement.class, Object.class, RowBounds.class, ResultHandler.class, CacheKey.class, BoundSql.class})
 })
 public class MyBatisPaginateInterceptor implements Interceptor {
+    private static final Logger logger = LoggerFactory.getLogger(MyBatisPaginateInterceptor.class);
+
+
     /**
      * 项目配置数据库方言的类名全限定名
      */
@@ -200,7 +205,7 @@ public class MyBatisPaginateInterceptor implements Interceptor {
 
                     TypeHandler typeHandler = parameterMapping.getTypeHandler();
                     if (typeHandler == null) {
-                        // log.error(this.getClass().getName() + "(177):There was no TypeHandler found for parameter " + propertyName + " of statement " + mappedStatement.getId());
+                        logger.error(this.getClass().getName() + "(177):There was no TypeHandler found for parameter " + propertyName + " of statement " + mappedStatement.getId());
                         throw new ExecutorException("There was no TypeHandler found for parameter " + propertyName + " of statement " + mappedStatement.getId());
                     }
 

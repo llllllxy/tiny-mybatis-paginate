@@ -92,7 +92,6 @@ public class StrUtils {
         return sb.toString();
     }
 
-
     /**
      * 首字母转换小写
      * Thus "FooBah" becomes "fooBah" and "X" becomes "x", but "URL" stays as "URL".
@@ -111,6 +110,45 @@ public class StrUtils {
         char[] chars = name.toCharArray();
         chars[0] = Character.toLowerCase(chars[0]);
         return new String(chars);
+    }
+
+    /**
+     * 首字母转大写
+     * @param str 需要转换的字符串
+     * @return 转换好的字符串
+     */
+    public static String capitalize(String str) {
+        return changeFirstCharacterCase(str, true);
+    }
+
+    /**
+     * 首字母转小写
+     * @param str 需要转换的字符串
+     * @return 转换好的字符串
+     */
+    public static String uncapitalize(String str) {
+        return changeFirstCharacterCase(str, false);
+    }
+
+    private static String changeFirstCharacterCase(String str, boolean capitalize) {
+        if (isEmpty(str)) {
+            return str;
+        } else {
+            char baseChar = str.charAt(0);
+            char updatedChar;
+            if (capitalize) {
+                updatedChar = Character.toUpperCase(baseChar);
+            } else {
+                updatedChar = Character.toLowerCase(baseChar);
+            }
+            if (baseChar == updatedChar) {
+                return str;
+            } else {
+                char[] chars = str.toCharArray();
+                chars[0] = updatedChar;
+                return new String(chars, 0, chars.length);
+            }
+        }
     }
 
     /**

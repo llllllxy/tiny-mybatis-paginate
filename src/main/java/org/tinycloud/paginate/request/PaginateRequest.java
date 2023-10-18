@@ -6,29 +6,28 @@ import org.tinycloud.paginate.utils.PageRequestHolder;
 
 /**
  * 分页请求对象
- *
  */
 public class PaginateRequest extends AbstractPaginateRequest {
 
     /**
      * 构造函数初始化分页请求对象
      *
-     * @param pageIndex 当前页码
-     * @param pageSize  每页条数
+     * @param pageNumber 当前页码
+     * @param pageSize   每页条数
      */
-    private PaginateRequest(int pageIndex, int pageSize) {
-        super(pageIndex, pageSize);
+    private PaginateRequest(int pageNumber, int pageSize) {
+        super(pageNumber, pageSize);
     }
 
     /**
      * 对外提供的初始化分页请求方法
      *
-     * @param pageIndex 当前页码
-     * @param pageSize  每页条数
+     * @param pageNumber 当前页码
+     * @param pageSize   每页条数
      * @return 获取分页请求对象实例
      */
-    public static Paginate of(int pageIndex, int pageSize) {
-        return new PaginateRequest(pageIndex, pageSize);
+    public static Paginate of(int pageNumber, int pageSize) {
+        return new PaginateRequest(pageNumber, pageSize);
     }
 
     /**
