@@ -6,7 +6,7 @@ import org.tinycloud.paginate.dialect.AbstractDialect;
 
 /**
  * <p>
- * 数据库方言-Oracle
+ * 数据库方言-SqlServer2012版本
  * </p>
  *
  * @author liuxingyu01

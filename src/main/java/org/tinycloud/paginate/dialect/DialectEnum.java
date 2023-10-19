@@ -4,7 +4,7 @@ import org.tinycloud.paginate.dialect.support.*;
 
 /**
  * <p>
- *    数据库方言枚举，配合DialectUtils工具类可快速映射对应的方言实现类
+ * 数据库方言枚举，配合DialectUtils工具类可快速映射对应的方言实现类
  * </p>
  *
  * @author liuxingyu01
@@ -34,11 +34,11 @@ public enum DialectEnum {
     /**
      * H2
      */
-    H2("h2", H2Dialect.class),
+    H2("h2", HsqlDialect.class),
     /**
      * HSQL
      */
-    HSQL("hsql", MySqlDialect.class),
+    HSQL("hsql", HsqlDialect.class),
     /**
      * SQLITE
      */
@@ -62,7 +62,7 @@ public enum DialectEnum {
     /**
      * xugu
      */
-    XUGU("xugu", MySqlDialect.class),
+    XUGU("xugu", HsqlDialect.class),
     /**
      * Kingbase
      */
@@ -70,7 +70,7 @@ public enum DialectEnum {
     /**
      * Phoenix
      */
-    PHOENIX("phoenix", MySqlDialect.class),
+    PHOENIX("phoenix", HsqlDialect.class),
     /**
      * Gauss
      */
@@ -102,7 +102,7 @@ public enum DialectEnum {
     /**
      * Firebird
      */
-    FIREBIRD("Firebird", MySqlDialect.class),
+    FIREBIRD("Firebird", FirebirdDialect.class),
     /**
      * derby
      */
@@ -110,7 +110,7 @@ public enum DialectEnum {
     /**
      * HighGo
      */
-    HIGH_GO("highgo", PostgresDialect.class),
+    HIGH_GO("highgo", HsqlDialect.class),
     /**
      * CUBRID
      */
@@ -131,7 +131,7 @@ public enum DialectEnum {
     /**
      * Impala
      */
-    IMPALA("impala", MySqlDialect.class),
+    IMPALA("impala", HsqlDialect.class),
     /**
      * Vertica
      */

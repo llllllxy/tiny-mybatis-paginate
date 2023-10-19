@@ -3,7 +3,7 @@ package org.tinycloud.paginate.dialect.support;
 import org.tinycloud.paginate.Page;
 import org.tinycloud.paginate.dialect.AbstractDialect;
 
-public class PostgresDialect extends AbstractDialect {
+public class FirebirdDialect extends AbstractDialect {
 
     /**
      * 分页查询适配
@@ -16,16 +16,16 @@ public class PostgresDialect extends AbstractDialect {
     public String getPageSql(String oldSQL, Page<?> page) {
         Integer pageNo = page.getPageNum();
         Integer pageSize = page.getPageSize();
-        StringBuilder sql = new StringBuilder(oldSQL);
+        StringBuilder sql = new StringBuilder();
         if (pageSize > 0) {
             int offset = (pageNo - 1) * pageSize;
             int limit = pageSize;
-            if (offset <= 0) {
-                sql.append(" LIMIT ").append(limit);
-            } else {
-                sql.append(" OFFSET ").append(offset).append(" LIMIT ")
-                        .append(limit);
-            }
+            sql.append(oldSQL);
+            sql.append(" OFFSET ");
+            sql.append(offset);
+            sql.append(" ROWS FETCH NEXT ");
+            sql.append(limit);
+            sql.append(" ROWS ONLY");
         }
         return sql.toString();
     }
