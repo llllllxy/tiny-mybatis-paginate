@@ -17,16 +17,15 @@ public class PostgresDialect extends AbstractDialect {
         Integer pageNo = page.getPageNum();
         Integer pageSize = page.getPageSize();
         StringBuilder sql = new StringBuilder(oldSQL);
-        if (pageSize > 0) {
-            int offset = (pageNo - 1) * pageSize;
-            int limit = pageSize;
-            if (offset <= 0) {
-                sql.append(" LIMIT ").append(limit);
-            } else {
-                sql.append(" OFFSET ").append(offset).append(" LIMIT ")
-                        .append(limit);
-            }
+
+        int offset = (pageNo - 1) * pageSize;
+        int limit = pageSize;
+        if (offset == 0) {
+            sql.append(" LIMIT ").append(limit);
+        } else {
+            sql.append(" OFFSET ").append(offset).append(" LIMIT ").append(limit);
         }
+
         return sql.toString();
     }
 }

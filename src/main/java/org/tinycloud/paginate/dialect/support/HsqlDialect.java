@@ -18,7 +18,7 @@ public class HsqlDialect extends AbstractDialect {
         Integer pageSize = page.getPageSize();
         StringBuilder sql = new StringBuilder(oldSQL);
 
-        int offset = pageNo > 0 ? ((pageNo - 1) * pageSize) : 0;
+        int offset = (pageNo - 1) * pageSize;
         int limit = pageSize;
         if (limit > 0) {
             sql.append("\n LIMIT ").append(limit);

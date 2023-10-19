@@ -5,7 +5,7 @@ import org.tinycloud.paginate.dialect.AbstractDialect;
 
 /**
  * <p>
- *    数据库方言-Oracle
+ * 数据库方言-Oracle
  * </p>
  *
  * @author liuxingyu01
@@ -25,13 +25,13 @@ public class OracleDialect extends AbstractDialect {
         Integer pageNo = page.getPageNum();
         Integer pageSize = page.getPageSize();
         StringBuilder sql = new StringBuilder("SELECT * FROM ( SELECT TMP_TB.*, ROWNUM ROW_ID FROM ( ");
-        if (pageSize > 0) {
-            sql.append(oldSQL);
-            int pageStart = (pageNo - 1) * pageSize + 1;
-            int pageEnd = pageNo * pageSize;
-            sql.append(" ) TMP_TB WHERE ROWNUM <=  ").append(pageEnd).append(" ) WHERE ROW_ID >= ")
-                    .append(pageStart);
-        }
+
+        sql.append(oldSQL);
+        int pageStart = (pageNo - 1) * pageSize + 1;
+        int pageEnd = pageNo * pageSize;
+        sql.append(" ) TMP_TB WHERE ROWNUM <=  ").append(pageEnd).append(" ) WHERE ROW_ID >= ")
+                .append(pageStart);
+
         return sql.toString();
     }
 }

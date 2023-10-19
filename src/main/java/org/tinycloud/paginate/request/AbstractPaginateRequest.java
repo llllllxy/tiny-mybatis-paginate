@@ -28,9 +28,10 @@ public abstract class AbstractPaginateRequest implements Paginate {
      */
     public AbstractPaginateRequest(int pageNumber, int pageSize) {
         if (pageNumber < 1) {
-            throw new PaginateException("分页参数：当前页码参数传递错误，请传递大于0的正整数!");
-        } else if (pageSize < 1) {
-            throw new PaginateException("分页参数：每页条数参数传递错误，请传递大于0的正整数!");
+            throw new PaginateException("当前页码不能小于1!");
+        }
+        if (pageSize < 1) {
+            throw new PaginateException("每页条数不能小于1!");
         }
         this.pageNumber = pageNumber;
         this.pageSize = pageSize;

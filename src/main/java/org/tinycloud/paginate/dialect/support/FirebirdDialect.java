@@ -17,16 +17,16 @@ public class FirebirdDialect extends AbstractDialect {
         Integer pageNo = page.getPageNum();
         Integer pageSize = page.getPageSize();
         StringBuilder sql = new StringBuilder();
-        if (pageSize > 0) {
-            int offset = (pageNo - 1) * pageSize;
-            int limit = pageSize;
-            sql.append(oldSQL);
-            sql.append(" OFFSET ");
-            sql.append(offset);
-            sql.append(" ROWS FETCH NEXT ");
-            sql.append(limit);
-            sql.append(" ROWS ONLY");
-        }
+
+        int offset = (pageNo - 1) * pageSize;
+        int limit = pageSize;
+        sql.append(oldSQL);
+        sql.append(" OFFSET ");
+        sql.append(offset);
+        sql.append(" ROWS FETCH NEXT ");
+        sql.append(limit);
+        sql.append(" ROWS ONLY");
+
         return sql.toString();
     }
 }

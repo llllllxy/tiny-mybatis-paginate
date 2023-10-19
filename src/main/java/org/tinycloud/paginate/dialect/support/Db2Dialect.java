@@ -5,7 +5,7 @@ import org.tinycloud.paginate.dialect.AbstractDialect;
 
 /**
  * <p>
- *    数据库方言-db2
+ * 数据库方言-db2
  * </p>
  *
  * @author liuxingyu01
@@ -25,13 +25,13 @@ public class Db2Dialect extends AbstractDialect {
         Integer pageNo = page.getPageNum();
         Integer pageSize = page.getPageSize();
         StringBuilder sql = new StringBuilder("SELECT * FROM ( SELECT B.*, ROWNUMBER() OVER() AS RN FROM ( ");
-        if (pageSize > 0) {
-            sql.append(oldSQL);
-            int pageStart = (pageNo - 1) * pageSize + 1;
-            int pageEnd = pageStart + pageSize - 1;
-            sql.append(" ) AS B ) AS A WHERE A.RN BETWEEN ").append(pageStart).append(" AND ")
-                    .append(pageEnd);
-        }
+
+        sql.append(oldSQL);
+        int pageStart = (pageNo - 1) * pageSize + 1;
+        int pageEnd = pageStart + pageSize - 1;
+        sql.append(" ) AS B ) AS A WHERE A.RN BETWEEN ").append(pageStart).append(" AND ")
+                .append(pageEnd);
+
         return sql.toString();
     }
 

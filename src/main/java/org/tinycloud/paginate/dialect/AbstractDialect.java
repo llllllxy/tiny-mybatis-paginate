@@ -5,7 +5,7 @@ import org.tinycloud.paginate.Page;
 
 /**
  * <p>
- *    数据库方言-抽象类实现
+ * 数据库方言-抽象类实现
  * </p>
  *
  * @author liuxingyu01
@@ -40,15 +40,13 @@ public abstract class AbstractDialect implements Dialect {
         Integer pageNo = page.getPageNum();
         Integer pageSize = page.getPageSize();
         StringBuilder sql = new StringBuilder(oldSQL);
-        if (pageSize > 0) {
-            int offset = (pageNo - 1) * pageSize;
-            int limit = pageSize;
-            if (offset <= 0) {
-                sql.append(" limit ").append(limit);
-            } else {
-                sql.append(" limit ").append(offset).append(",")
-                        .append(limit);
-            }
+
+        int offset = (pageNo - 1) * pageSize;
+        int limit = pageSize;
+        if (offset == 0) {
+            sql.append(" limit ").append(limit);
+        } else {
+            sql.append(" limit ").append(offset).append(",").append(limit);
         }
         return sql.toString();
     }

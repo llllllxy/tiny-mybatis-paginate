@@ -20,14 +20,14 @@ public class InforMixDialect extends AbstractDialect {
         Integer pageNo = page.getPageNum();
         Integer pageSize = page.getPageSize();
         StringBuilder sql = new StringBuilder();
-        if (pageSize > 0) {
-            int offset = (pageNo - 1) * pageSize;
-            sql.append(oldSQL);
-            sql.append(" SKIP ");
-            sql.append(offset);
-            sql.append(" FIRST ");
-            sql.append(pageSize);
-        }
+
+        int offset = (pageNo - 1) * pageSize;
+        sql.append(oldSQL);
+        sql.append(" SKIP ");
+        sql.append(offset);
+        sql.append(" FIRST ");
+        sql.append(pageSize);
+
         // 忽略大小写进行替换
         Pattern pattern = Pattern.compile("SELECT", Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(oldSQL);
