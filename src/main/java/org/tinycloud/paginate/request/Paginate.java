@@ -44,27 +44,6 @@ public interface Paginate {
     long getEndRow();
 
     /**
-     * 下一页
-     *
-     * @return 下一页分页请求对象实例
-     */
-    Paginate next();
-
-    /**
-     * 上一页
-     *
-     * @return 上一页分页请求对象实例
-     */
-    Paginate previous();
-
-    /**
-     * 第一页
-     *
-     * @return 首页分页请求对象实例
-     */
-    Paginate first();
-
-    /**
      * 请求分页并且返回分页响应实体实例
      *
      * @param logicFunction 业务方法函数

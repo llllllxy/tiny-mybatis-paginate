@@ -6,6 +6,7 @@ import java.util.Collection;
 
 /**
  * 分页对象，支持pageNum-pageSize模式
+ *
  * @author liuxingyu01
  * @since 2023-10-10 9:17
  **/
@@ -13,7 +14,7 @@ public class Page<T> implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 当前页（pageNo = offset / limit + 1;）
+     * 当前页码（pageNo = offset / limit + 1;）
      */
     private Integer pageNum;
 
@@ -47,7 +48,7 @@ public class Page<T> implements Serializable {
     }
 
     public Page(Collection<T> records, int total, Integer pageNum, Integer pageSize) {
-        this.records = (records == null ? new ArrayList<T>(0) : records);
+        this.records = (records == null ? new ArrayList<T>() : records);
         this.total = total;
         this.pageSize = pageSize;
         this.pageNum = pageNum;

@@ -63,34 +63,4 @@ public class PaginateRequest extends AbstractPaginateRequest {
             PageRequestHolder.removePageLocal();
         }
     }
-
-    /**
-     * 获取下一页分页对象
-     *
-     * @return 获取下一页分页请求实例
-     */
-    @Override
-    public Paginate next() {
-        return of(pageNumber + 1, pageSize);
-    }
-
-    /**
-     * 获取上一页分页对象
-     *
-     * @return 获取上一页分页请求实例
-     */
-    @Override
-    public Paginate previous() {
-        return pageNumber == 1 ? this : of(pageNumber - 1, pageSize);
-    }
-
-    /**
-     * 获取首页分页对象
-     *
-     * @return 获取首页分页请求实例
-     */
-    @Override
-    public Paginate first() {
-        return of(1, pageSize);
-    }
 }
