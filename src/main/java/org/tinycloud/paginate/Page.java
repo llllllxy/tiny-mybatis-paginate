@@ -96,10 +96,45 @@ public class Page<T> implements Serializable {
         this.pages = (total + pageSize - 1) / pageSize;
     }
 
+    /**
+     * 是否存在下一页
+     *
+     * @return true：存在，false：不存在
+     */
+    public boolean hasNextPage() {
+        return this.getPages() > this.getPageNum();
+    }
+
+    /**
+     * 是否存在上一页
+     *
+     * @return true：存在上一页，false：不存在
+     */
+    public boolean hasPreviousPage() {
+        return this.getPageNum() > 1;
+    }
+
+    /**
+     * 是否为首页
+     *
+     * @return true：首页，false：非首页
+     */
+    public boolean isFirstPage() {
+        return this.getPageNum() == 1;
+    }
+
+    /**
+     * 是否为末页
+     *
+     * @return true：为末页，false：非末页
+     */
+    public boolean isLastPage() {
+        return this.getPages().equals(this.getPageNum());
+    }
+
     @Override
     public String toString() {
         return "Page {pageNum=" + pageNum + ", pageSize=" + pageSize + ", total=" + total + ", pages=" + pages
                 + ", records=" + records + "}";
     }
-
 }
