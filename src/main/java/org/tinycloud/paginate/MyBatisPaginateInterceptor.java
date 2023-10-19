@@ -51,7 +51,7 @@ public class MyBatisPaginateInterceptor implements Interceptor {
     /**
      * 缓存数据库方言对象到内存
      */
-    private Dialect dialectCache;
+    private Dialect dialectImpl;
 
     @Override
     public Object intercept(Invocation invocation) throws Throwable {
@@ -70,8 +70,8 @@ public class MyBatisPaginateInterceptor implements Interceptor {
         }
         BoundSql boundSql = statement.getBoundSql(parameterObject);
 
-        if (dialectCache == null) {
-            dialectCache = DialectUtils.newInstance(statement, this.dialect);
+        if (dialectImpl == null) {
+            dialectImpl = DialectUtils.newInstance(statement, this.dialect);
         }
         Page<?> page = PageRequestHolder.getPageLocal();
 
@@ -95,7 +95,7 @@ public class MyBatisPaginateInterceptor implements Interceptor {
         MetaObject msObject = MetaObject.forObject(newStatement, new DefaultObjectFactory(), new DefaultObjectWrapperFactory(),
                 new DefaultReflectorFactory());
         String sql = boundSql.getSql().trim();
-        String pageSql = dialectCache.getPageSql(sql, page);
+        String pageSql = dialectImpl.getPageSql(sql, page);
         msObject.setValue("sqlSource.boundSql.sql", pageSql);
         args[0] = newStatement;
         return invocation.proceed();
@@ -137,7 +137,7 @@ public class MyBatisPaginateInterceptor implements Interceptor {
     private int executeCount(BoundSql boundSql, MappedStatement mappedStatement) throws SQLException {
         Object parameterObject = boundSql.getParameterObject();
         String sql = boundSql.getSql().trim();
-        String countSql = dialectCache.getCountSql(sql);
+        String countSql = dialectImpl.getCountSql(sql);
 
         //获取相关配置
         Configuration config = mappedStatement.getConfiguration();
