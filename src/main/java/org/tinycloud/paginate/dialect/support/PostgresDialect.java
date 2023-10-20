@@ -23,7 +23,7 @@ public class PostgresDialect extends AbstractDialect {
         if (offset == 0) {
             sql.append(" LIMIT ").append(limit);
         } else {
-            sql.append(" OFFSET ").append(offset).append(" LIMIT ").append(limit);
+            sql.append(" LIMIT ").append(limit).append(" OFFSET ").append(offset);
         }
 
         return sql.toString();
