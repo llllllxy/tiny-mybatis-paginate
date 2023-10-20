@@ -3,17 +3,7 @@ package org.tinycloud.paginate.dialect.support;
 import org.tinycloud.paginate.Page;
 import org.tinycloud.paginate.dialect.AbstractDialect;
 
-
-/**
- * <p>
- * 数据库方言-SqlServer2012版本
- * </p>
- *
- * @author liuxingyu01
- * @since 2023-10-18
- **/
-public class SqlServerDialect extends AbstractDialect {
-
+public class Oracle12cDialect extends AbstractDialect {
     /**
      * 分页查询适配
      *
@@ -23,11 +13,11 @@ public class SqlServerDialect extends AbstractDialect {
      */
     @Override
     public String getPageSql(String oldSQL, Page<?> page) {
-        Integer pageNo = page.getPageNum();
+        Integer pageNum = page.getPageNum();
         Integer pageSize = page.getPageSize();
         StringBuilder sql = new StringBuilder();
 
-        int offset = (pageNo - 1) * pageSize;
+        int offset = (pageNum - 1) * pageSize;
         int limit = pageSize;
         sql.append(oldSQL);
         sql.append(" OFFSET ");

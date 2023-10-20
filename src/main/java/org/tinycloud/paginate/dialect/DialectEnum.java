@@ -26,7 +26,7 @@ public enum DialectEnum {
     /**
      * oracle12c
      */
-    ORACLE_12C("oracle12c", OracleDialect.class),
+    ORACLE_12C("oracle12c", Oracle12cDialect.class),
     /**
      * DB2
      */
@@ -54,7 +54,7 @@ public enum DialectEnum {
     /**
      * SqlServer 2005 数据库
      */
-    SQLSERVER_2005("sqlserver_2005", OracleDialect.class),
+    SQLSERVER_2005("sqlserver_2005", SqlServer2005Dialect.class),
     /**
      * DM
      */
