@@ -41,8 +41,8 @@
 ```xml
     <dependency>
         <groupId>org.tinycloud</groupId>
-        <artifactId>tiny-jdbc-boot-starter</artifactId>
-        <version>1.4.4</version>
+        <artifactId>tiny-mybatis-paginate</artifactId>
+        <version>1.0.0</version>
     </dependency>
 ```
 
