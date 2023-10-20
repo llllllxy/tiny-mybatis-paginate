@@ -139,7 +139,7 @@ public enum DialectEnum {
     /**
      * 东方国信 xcloud
      */
-    XCloud("xcloud", MySqlDialect.class),
+    XCloud("xcloud", XCloudDialect.class),
     /**
      * redshift
      */

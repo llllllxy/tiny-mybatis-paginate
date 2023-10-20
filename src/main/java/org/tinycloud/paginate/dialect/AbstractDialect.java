@@ -44,9 +44,9 @@ public abstract class AbstractDialect implements Dialect {
         int offset = (pageNo - 1) * pageSize;
         int limit = pageSize;
         if (offset == 0) {
-            sql.append(" limit ").append(limit);
+            sql.append(" LIMIT ").append(limit);
         } else {
-            sql.append(" limit ").append(offset).append(",").append(limit);
+            sql.append(" LIMIT ").append(offset).append(",").append(limit);
         }
         return sql.toString();
     }
