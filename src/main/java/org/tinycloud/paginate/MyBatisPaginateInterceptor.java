@@ -75,26 +75,38 @@ public class MyBatisPaginateInterceptor implements Interceptor {
         }
         Page<?> page = PageRequestHolder.getPageLocal();
 
+        // 执行查询总记录数的sql
         int count = executeCount(boundSql, statement);
         page.setTotal(count);
 
-        // 重新执行新的sql
+        // 执行分页查询的sql
         Object result = executePage(page, invocation);
         page.setRecords((Collection) result);
 
         return result;
     }
 
-
+    /**
+     * 执行分页查询
+     *
+     * @param page       分页参数对象
+     * @param invocation Invocation
+     * @return 执行结果
+     * @throws Throwable 异常
+     */
     private Object executePage(Page<?> page, Invocation invocation) throws Throwable {
         final Object[] args = invocation.getArgs();
         MappedStatement statement = (MappedStatement) args[0];
-        Object parameterObject = args[1];
+        Object parameterObject = null;
+        if (args.length > 1) {
+            parameterObject = args[1];
+        }
         BoundSql boundSql = statement.getBoundSql(parameterObject);
         MappedStatement newStatement = newMappedStatement(statement, new BoundSqlSqlSource(boundSql));
         MetaObject msObject = MetaObject.forObject(newStatement, new DefaultObjectFactory(), new DefaultObjectWrapperFactory(),
                 new DefaultReflectorFactory());
         String sql = boundSql.getSql().trim();
+        // 根据数据库方言，生成对应的分页sql
         String pageSql = dialectImpl.getPageSql(sql, page);
         msObject.setValue("sqlSource.boundSql.sql", pageSql);
         args[0] = newStatement;
@@ -134,6 +146,13 @@ public class MyBatisPaginateInterceptor implements Interceptor {
         return builder.build();
     }
 
+    /**
+     * 执行总记录数查询
+     *
+     * @param boundSql        boundSql
+     * @param mappedStatement MappedStatement
+     * @return totalRecord 总记录数
+     */
     private int executeCount(BoundSql boundSql, MappedStatement mappedStatement) throws SQLException {
         Object parameterObject = boundSql.getParameterObject();
         String sql = boundSql.getSql().trim();
@@ -173,7 +192,9 @@ public class MyBatisPaginateInterceptor implements Interceptor {
         return totalRecord;
     }
 
-
+    /**
+     * 参数设置器，可以设置映射参数
+     */
     private void setParameters(PreparedStatement ps, MappedStatement mappedStatement, BoundSql boundSql, Object parameterObject) throws SQLException {
         ErrorContext.instance().activity("setting parameters").object(mappedStatement.getParameterMap().getId());
         List<ParameterMapping> parameterMappings = boundSql.getParameterMappings();
@@ -239,20 +260,21 @@ public class MyBatisPaginateInterceptor implements Interceptor {
         this.dialect = properties.getProperty("dialect");
     }
 
+}
 
-    /**
-     * 新的SqlSource需要实现
-     */
-    class BoundSqlSqlSource implements SqlSource {
-        private BoundSql boundSql;
 
-        public BoundSqlSqlSource(BoundSql boundSql) {
-            this.boundSql = boundSql;
-        }
+/**
+ * 新的SqlSource需要实现
+ */
+class BoundSqlSqlSource implements SqlSource {
+    private BoundSql boundSql;
 
-        @Override
-        public BoundSql getBoundSql(Object parameterObject) {
-            return boundSql;
-        }
+    public BoundSqlSqlSource(BoundSql boundSql) {
+        this.boundSql = boundSql;
+    }
+
+    @Override
+    public BoundSql getBoundSql(Object parameterObject) {
+        return boundSql;
     }
 }
