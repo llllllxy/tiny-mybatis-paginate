@@ -35,15 +35,8 @@ public abstract class AbstractPaginateRequest implements Paginate {
         }
         this.pageNumber = pageNumber;
         this.pageSize = pageSize;
-        // 设置分页响应threadLocal
-        setPageThreadLocal();
-    }
 
-    /**
-     * 设置分页响应对应到threadLocal
-     */
-    private void setPageThreadLocal() {
-        // 构造分页响应对象
+        // 构造分页参数对象
         Page<?> page = new Page<>(this.pageNumber, this.pageSize);
         // 写入到threadLocal
         PageRequestHolder.setPageLocal(page);

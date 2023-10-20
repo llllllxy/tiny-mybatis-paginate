@@ -119,7 +119,7 @@ public class Page<T> implements Serializable {
      *
      * @return true：首页，false：非首页
      */
-    public boolean isFirstPage() {
+    public boolean firstPage() {
         return this.getPageNum() == 1;
     }
 
@@ -128,7 +128,7 @@ public class Page<T> implements Serializable {
      *
      * @return true：为末页，false：非末页
      */
-    public boolean isLastPage() {
+    public boolean lastPage() {
         return this.getPages().equals(this.getPageNum());
     }
 
