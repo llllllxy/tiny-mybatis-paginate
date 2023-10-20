@@ -42,7 +42,7 @@ public enum DialectEnum {
     /**
      * SQLITE
      */
-    SQLITE("sqlite", SqlLiteDialect.class),
+    SQLITE("sqlite", HsqlDialect.class),
     /**
      * POSTGRE
      */
@@ -62,11 +62,11 @@ public enum DialectEnum {
     /**
      * xugu
      */
-    XUGU("xugu", HsqlDialect.class),
+    XUGU("xugu", MySqlDialect.class),
     /**
      * Kingbase
      */
-    KINGBASE_ES("kingbasees", MySqlDialect.class),
+    KINGBASE_ES("kingbasees", PostgresDialect.class),
     /**
      * Phoenix
      */
@@ -74,7 +74,7 @@ public enum DialectEnum {
     /**
      * Gauss
      */
-    GAUSS("gauss", MySqlDialect.class),
+    GAUSS("gauss", OracleDialect.class),
     /**
      * ClickHouse
      */
@@ -135,7 +135,7 @@ public enum DialectEnum {
     /**
      * Vertica
      */
-    VERTICA("vertica", MySqlDialect.class),
+    VERTICA("vertica", HsqlDialect.class),
     /**
      * 东方国信 xcloud
      */
@@ -143,15 +143,15 @@ public enum DialectEnum {
     /**
      * redshift
      */
-    REDSHIFT("redshift", MySqlDialect.class),
+    REDSHIFT("redshift", HsqlDialect.class),
     /**
      * openGauss
      */
-    OPENGAUSS("openGauss", MySqlDialect.class),
+    OPENGAUSS("openGauss", PostgresDialect.class),
     /**
      * TDengine
      */
-    TDENGINE("TDengine", MySqlDialect.class),
+    TDENGINE("TDengine", HsqlDialect.class),
     /**
      * Informix
      */
@@ -159,11 +159,11 @@ public enum DialectEnum {
     /**
      * sinodb
      */
-    SINODB("sinodb", MySqlDialect.class),
+    SINODB("sinodb", GBase8sDialect.class),
     /**
      * uxdb
      */
-    UXDB("uxdb", MySqlDialect.class),
+    UXDB("uxdb", HsqlDialect.class),
     /**
      * greenplum
      */

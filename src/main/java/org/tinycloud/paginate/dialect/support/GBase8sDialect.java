@@ -12,7 +12,7 @@ public class GBase8sDialect extends AbstractDialect {
      * @return 处理过后的sql
      */
     @Override
-    public String getPageSql(String originalSql, Page<?> page) {
+    public String getPageSql(String originalSql, Page page) {
         Integer pageNo = page.getPageNum();
         Integer pageSize = page.getPageSize();
         int offset = (pageNo - 1) * pageSize;

@@ -19,14 +19,14 @@ public class InforMixDialect extends AbstractDialect {
     public String getPageSql(String oldSQL, Page<?> page) {
         Integer pageNo = page.getPageNum();
         Integer pageSize = page.getPageSize();
-        StringBuilder sql = new StringBuilder();
-
         int offset = (pageNo - 1) * pageSize;
-        sql.append(oldSQL);
+        int limit = pageSize;
+
+        StringBuilder sql = new StringBuilder("SELECT");
         sql.append(" SKIP ");
         sql.append(offset);
         sql.append(" FIRST ");
-        sql.append(pageSize);
+        sql.append(limit);
 
         // 忽略大小写进行替换
         Pattern pattern = Pattern.compile("SELECT", Pattern.CASE_INSENSITIVE);
