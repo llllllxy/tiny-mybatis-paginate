@@ -94,7 +94,7 @@ public enum DialectEnum {
     /**
      * Sybase
      */
-    SYBASE("sybase", MySqlDialect.class),
+    SYBASE("sybase", SybaseDialect.class),
     /**
      * OceanBase
      */
