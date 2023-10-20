@@ -86,7 +86,7 @@ public enum DialectEnum {
     /**
      * GBase-8s
      */
-    GBASE_8S("gbase-8s", MySqlDialect.class),
+    GBASE_8S("gbase-8s", GBase8sDialect.class),
     /**
      * Oscar
      */
