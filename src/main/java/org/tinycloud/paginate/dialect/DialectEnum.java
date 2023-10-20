@@ -46,7 +46,7 @@ public enum DialectEnum {
     /**
      * POSTGRE
      */
-    POSTGRE_SQL("postgresql", MySqlDialect.class),
+    POSTGRE_SQL("postgresql", PostgresDialect.class),
     /**
      * SQLSERVER
      */
