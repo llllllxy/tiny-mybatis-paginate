@@ -138,5 +138,5 @@ Page<SysLoginLog> page = PaginateRequest.in(0, 10).request(() -> loginLogMapper.
 - `pageSize` 每页条数
 - `hasNextPage` 是否存在下一页，`true`：存在，`false`：不存在
 - `hasPreviousPage` 是否存在上一页，`true`：存在，`false`：不存在
-- `isFirstPage` 是否为首页，`true`：首页，`false`：非首页
-- `isLastPage` 是否为末页，`true`：末页，`false`：非末页
+- `firstPage` 是否为首页，`true`：首页，`false`：非首页
+- `lastPage` 是否为末页，`true`：末页，`false`：非末页
