@@ -45,7 +45,7 @@ public class SybaseDialect extends AbstractDialect {
         }
         sql = sql + " rownum=identity(12)," + originalSql.substring(6, index) + " into #t " + originalSql.substring(index);
         sql = sql + " select * from #t where rownum > " + offset + " and rownum <= " + (offset + limit);
-        sql = sql + "drop table #t ";
+        sql = sql + " drop table #t ";
         return sql;
     }
 
