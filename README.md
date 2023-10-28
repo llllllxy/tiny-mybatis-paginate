@@ -7,6 +7,18 @@
 	<a target="_blank" href="https://www.oracle.com/technetwork/java/javase/downloads/index.html">
 		<img src="https://img.shields.io/badge/JDK-8+-blue.svg" />
 	</a>
+    <a href="https://github.com/llllllxy/tiny-mybatis-paginate/stargazers">
+        <img src="https://img.shields.io/github/stars/llllllxy/tiny-mybatis-paginate?style=flat-square&logo=GitHub">
+    </a>
+    <a href="https://github.com/llllllxy/tiny-mybatis-paginate/network/members">
+        <img src="https://img.shields.io/github/forks/llllllxy/tiny-mybatis-paginate?style=flat-square&logo=GitHub">
+    </a>
+    <a href="https://github.com/llllllxy/tiny-mybatis-paginate/watchers">
+        <img src="https://img.shields.io/github/watchers/llllllxy/tiny-mybatis-paginate?style=flat-square&logo=GitHub">
+    </a>
+    <a href="https://github.com/llllllxy/tiny-mybatis-paginate/issues">
+        <img src="https://img.shields.io/github/issues/llllllxy/tiny-mybatis-paginate.svg?style=flat-square&logo=GitHub">
+    </a>
     <a href='https://gitee.com/leisureLXY/tiny-mybatis-paginate'>
         <img src='https://gitee.com/leisureLXY/tiny-mybatis-paginate/badge/star.svg?theme=dark' alt='star' />
     </a>
