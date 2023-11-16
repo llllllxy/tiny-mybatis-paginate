@@ -52,7 +52,7 @@
 ### 引入依赖
 ```xml
     <dependency>
-        <groupId>org.tinycloud</groupId>
+        <groupId>io.github.llllllxy</groupId>
         <artifactId>tiny-mybatis-paginate</artifactId>
         <version>1.0.1</version>
     </dependency>
