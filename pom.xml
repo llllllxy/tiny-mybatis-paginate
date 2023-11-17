@@ -4,13 +4,15 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>io.github.llllllxy</groupId>
+    <groupId>top.lxyccc</groupId>
     <artifactId>tiny-mybatis-paginate</artifactId>
     <version>1.0.1</version>
 
     <name>tiny-mybatis-paginate</name>
     <url>https://github.com/llllllxy/tiny-mybatis-paginate</url>
-    <description>tiny-mybatis-paginate is a MyBatis auxiliary pagination plugin, developed based on the MyBatis Interceptor, which is easy to use, safe and reliable, and has excellent performance.</description>
+    <description>tiny-mybatis-paginate is a MyBatis auxiliary pagination plugin, developed based on the MyBatis
+        Interceptor, which is easy to use, safe and reliable, and has excellent performance.
+    </description>
 
     <licenses>
         <license>
@@ -29,8 +31,8 @@
         <developer>
             <name>llllllxy</name>
             <email>leisure01@aliyun.com</email>
-            <organization>Sonatype</organization>
-            <organizationUrl>https://www.sonatype.com</organizationUrl>
+            <organization>Github</organization>
+            <organizationUrl>https://github.com/llllllxy</organizationUrl>
         </developer>
     </developers>
 
