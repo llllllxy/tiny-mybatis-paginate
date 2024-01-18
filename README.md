@@ -113,7 +113,7 @@ public class MybatisInterceptorConfig {
         MyBatisPaginateInterceptor pageInterceptor = new MyBatisPaginateInterceptor();
         Properties pageProperties = new Properties();
         /*
-         * 默认值为 false。设置为 true 时，允许在运行时根据多数据源自动识别对应方言的分页 （不支持自动选择sqlserver2012，只能使用sqlserver）
+         * 配置数据库方言，不配置的话会根据jdbcUrl自动适配（不支持自动选择sqlserver2012，只能使用sqlserver）
          */
         pageProperties.setProperty("dialect", "mysql");
         pageInterceptor.setProperties(pageProperties);
