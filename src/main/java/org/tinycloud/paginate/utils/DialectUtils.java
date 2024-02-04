@@ -1,5 +1,7 @@
 package org.tinycloud.paginate.utils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.tinycloud.paginate.dialect.Dialect;
 import org.tinycloud.paginate.dialect.DialectEnum;
 import org.tinycloud.paginate.exception.PaginateException;
@@ -12,6 +14,8 @@ import java.sql.SQLException;
 import java.util.regex.Pattern;
 
 public class DialectUtils {
+    private static final Logger logger = LoggerFactory.getLogger(DialectUtils.class);
+
     private DialectUtils() {
     }
 
@@ -103,6 +107,9 @@ public class DialectUtils {
      * @return 返回数据库类型
      */
     public static DialectEnum parseDialectEnum(String jdbcUrl) {
+        if (StrUtils.isEmpty(jdbcUrl)) {
+            throw new IllegalStateException("The jdbcUrl is null, cannot parse DialectEnum!");
+        }
         jdbcUrl = jdbcUrl.toLowerCase();
         if (jdbcUrl.contains(":mysql:") || jdbcUrl.contains(":cobar:")) {
             return DialectEnum.MYSQL;
@@ -179,6 +186,7 @@ public class DialectUtils {
         } else if (jdbcUrl.contains(":greenplum:")) {
             return DialectEnum.GREENPLUM;
         } else {
+            logger.warn("The jdbcUrl " + jdbcUrl + ", cannot parse DialectEnum or the database is not supported!");
             return DialectEnum.OTHER;
         }
     }
