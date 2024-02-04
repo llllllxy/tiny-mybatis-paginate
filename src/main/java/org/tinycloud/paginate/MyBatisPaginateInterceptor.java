@@ -226,7 +226,7 @@ public class MyBatisPaginateInterceptor implements Interceptor {
 
                     TypeHandler typeHandler = parameterMapping.getTypeHandler();
                     if (typeHandler == null) {
-                        logger.error(this.getClass().getName() + "(177):There was no TypeHandler found for parameter " + propertyName + " of statement " + mappedStatement.getId());
+                        logger.error(this.getClass().getName() + ": There was no TypeHandler found for parameter " + propertyName + " of statement " + mappedStatement.getId());
                         throw new ExecutorException("There was no TypeHandler found for parameter " + propertyName + " of statement " + mappedStatement.getId());
                     }
 
