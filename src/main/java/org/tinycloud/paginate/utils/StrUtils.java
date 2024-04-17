@@ -21,7 +21,7 @@ public class StrUtils {
      * @return 如果字符串序列是 null 或者全是空白，返回 true
      */
     public static boolean isBlank(CharSequence cs) {
-        if (cs != null) {
+        if (isNotEmpty(cs)) {
             int length = cs.length();
             for (int i = 0; i < length; i++) {
                 if (!Character.isWhitespace(cs.charAt(i))) {
@@ -114,6 +114,7 @@ public class StrUtils {
 
     /**
      * 首字母转大写
+     *
      * @param str 需要转换的字符串
      * @return 转换好的字符串
      */
@@ -123,6 +124,7 @@ public class StrUtils {
 
     /**
      * 首字母转小写
+     *
      * @param str 需要转换的字符串
      * @return 转换好的字符串
      */

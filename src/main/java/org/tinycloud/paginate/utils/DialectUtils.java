@@ -28,13 +28,12 @@ public class DialectUtils {
      */
     public static Dialect newInstance(MappedStatement statement, String dialect) {
         try {
-            // 如果没有传递枚举参数
-            // 则自动根据数据库
-            if (dialect == null) {
+            // 如果没有传递枚举参数，则自动根据数据库
+            if (dialect == null || dialect.isEmpty()) {
                 return getDialectEnum(statement).getValue().newInstance();
             }
             // 反射获取方言实现实例
-            return (Dialect) DialectEnum.getDialect(dialect).newInstance();
+            return DialectEnum.getDialect(dialect).newInstance();
         }
         // 遇到异常后抛出方言暂未支持异常
         catch (Exception e) {
