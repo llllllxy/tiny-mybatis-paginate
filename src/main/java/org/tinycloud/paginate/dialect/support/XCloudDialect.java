@@ -14,15 +14,15 @@ public class XCloudDialect extends AbstractDialect {
      */
     @Override
     public String getPageSql(String oldSQL, Page<?> page) {
-        Integer pageNo = page.getPageNum();
-        Integer pageSize = page.getPageSize();
+        long pageNo = page.getPageNum();
+        long pageSize = page.getPageSize();
         StringBuilder sql = new StringBuilder(oldSQL);
 
-        int offset = (pageNo - 1) * pageSize;
-        int limit = pageSize;
+        long offset = (pageNo - 1L) * pageSize;
+        long limit = pageSize;
         sql.append(" LIMIT ");
         if (offset != 0) {
-            sql.append(" ( ").append(offset + 1).append(",").append(offset + limit).append(" ) ");
+            sql.append(" ( ").append(offset + 1L).append(",").append(offset + limit).append(" ) ");
         } else {
             sql.append(limit);
         }

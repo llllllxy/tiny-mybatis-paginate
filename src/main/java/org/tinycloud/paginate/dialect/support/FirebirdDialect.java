@@ -14,12 +14,12 @@ public class FirebirdDialect extends AbstractDialect {
      */
     @Override
     public String getPageSql(String oldSQL, Page<?> page) {
-        Integer pageNo = page.getPageNum();
-        Integer pageSize = page.getPageSize();
+        long pageNo = page.getPageNum();
+        long pageSize = page.getPageSize();
         StringBuilder sql = new StringBuilder();
 
-        int offset = (pageNo - 1) * pageSize;
-        int limit = pageSize;
+        long offset = (pageNo - 1L) * pageSize;
+        long limit = pageSize;
         sql.append(oldSQL);
         sql.append(" OFFSET ");
         sql.append(offset);

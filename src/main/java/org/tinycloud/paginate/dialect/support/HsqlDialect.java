@@ -14,16 +14,16 @@ public class HsqlDialect extends AbstractDialect {
      */
     @Override
     public String getPageSql(String oldSQL, Page<?> page) {
-        Integer pageNo = page.getPageNum();
-        Integer pageSize = page.getPageSize();
+        long pageNo = page.getPageNum();
+        long pageSize = page.getPageSize();
         StringBuilder sql = new StringBuilder(oldSQL);
 
-        int offset = (pageNo - 1) * pageSize;
-        int limit = pageSize;
-        if (limit > 0) {
+        long offset = (pageNo - 1L) * pageSize;
+        long limit = pageSize;
+        if (limit > 0L) {
             sql.append("\n LIMIT ").append(limit);
         }
-        if (offset > 0) {
+        if (offset > 0L) {
             sql.append("\n OFFSET ").append(offset);
         }
 

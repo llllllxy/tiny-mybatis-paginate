@@ -14,13 +14,13 @@ public class PostgresDialect extends AbstractDialect {
      */
     @Override
     public String getPageSql(String oldSQL, Page<?> page) {
-        Integer pageNo = page.getPageNum();
-        Integer pageSize = page.getPageSize();
+        long pageNo = page.getPageNum();
+        long pageSize = page.getPageSize();
         StringBuilder sql = new StringBuilder(oldSQL);
 
-        int offset = (pageNo - 1) * pageSize;
-        int limit = pageSize;
-        if (offset == 0) {
+        long offset = (pageNo - 1L) * pageSize;
+        long limit = pageSize;
+        if (offset == 0L) {
             sql.append(" LIMIT ").append(limit);
         } else {
             sql.append(" LIMIT ").append(limit).append(" OFFSET ").append(offset);

@@ -17,10 +17,10 @@ public class InforMixDialect extends AbstractDialect {
      */
     @Override
     public String getPageSql(String oldSQL, Page<?> page) {
-        Integer pageNo = page.getPageNum();
-        Integer pageSize = page.getPageSize();
-        int offset = (pageNo - 1) * pageSize;
-        int limit = pageSize;
+        long pageNo = page.getPageNum();
+        long pageSize = page.getPageSize();
+        long offset = (pageNo - 1L) * pageSize;
+        long limit = pageSize;
 
         StringBuilder sql = new StringBuilder("SELECT");
         sql.append(" SKIP ");

@@ -22,13 +22,13 @@ public class Db2Dialect extends AbstractDialect {
      */
     @Override
     public String getPageSql(String oldSQL, Page<?> page) {
-        Integer pageNo = page.getPageNum();
-        Integer pageSize = page.getPageSize();
+        long pageNo = page.getPageNum();
+        long pageSize = page.getPageSize();
         StringBuilder sql = new StringBuilder("SELECT * FROM ( SELECT B.*, ROWNUMBER() OVER() AS RN FROM ( ");
 
         sql.append(oldSQL);
-        int pageStart = (pageNo - 1) * pageSize + 1;
-        int pageEnd = pageStart + pageSize - 1;
+        long pageStart = (pageNo - 1L) * pageSize + 1L;
+        long pageEnd = pageStart + pageSize - 1L;
         sql.append(" ) AS B ) AS A WHERE A.RN BETWEEN ").append(pageStart).append(" AND ")
                 .append(pageEnd);
 

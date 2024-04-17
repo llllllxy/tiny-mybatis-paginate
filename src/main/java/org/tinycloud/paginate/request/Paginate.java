@@ -13,14 +13,14 @@ public interface Paginate {
      *
      * @return 当前页码
      */
-    int getPageNumber();
+    long getPageNumber();
 
     /**
      * 每页条数
      *
      * @return 每页条数
      */
-    int getPageSize();
+    long getPageSize();
 
     /**
      * 当前页开始位置
@@ -34,7 +34,7 @@ public interface Paginate {
      *
      * @return 分页开始位置
      */
-    int getLimit();
+    long getLimit();
 
     /**
      * 当前页码结束位置

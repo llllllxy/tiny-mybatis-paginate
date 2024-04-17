@@ -15,7 +15,7 @@ public class PaginateRequest extends AbstractPaginateRequest {
      * @param pageNumber 当前页码
      * @param pageSize   每页条数
      */
-    private PaginateRequest(int pageNumber, int pageSize) {
+    private PaginateRequest(long pageNumber, long pageSize) {
         super(pageNumber, pageSize);
     }
 
@@ -26,7 +26,7 @@ public class PaginateRequest extends AbstractPaginateRequest {
      * @param pageSize   每页条数
      * @return 获取分页请求对象实例
      */
-    public static Paginate of(int pageNumber, int pageSize) {
+    public static Paginate of(long pageNumber, long pageSize) {
         return new PaginateRequest(pageNumber, pageSize);
     }
 
@@ -37,9 +37,9 @@ public class PaginateRequest extends AbstractPaginateRequest {
      * @param limit  每页条数
      * @return 获取分页请求对象实例
      */
-    public static Paginate in(int offset, int limit) {
-        int pageSize = limit;
-        int pageNumber = offset / limit + 1;
+    public static Paginate in(long offset, long limit) {
+        long pageSize = limit;
+        long pageNumber = offset / limit + 1L;
         return new PaginateRequest(pageNumber, pageSize);
     }
 

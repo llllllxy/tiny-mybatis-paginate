@@ -29,11 +29,11 @@ public class SybaseDialect extends AbstractDialect {
      */
     @Override
     public String getPageSql(String originalSql, Page<?> page) {
-        Integer pageNo = page.getPageNum();
-        Integer pageSize = page.getPageSize();
+        long pageNo = page.getPageNum();
+        long pageSize = page.getPageSize();
 
-        int offset = (pageNo - 1) * pageSize;
-        int limit = pageSize;
+        long offset = (pageNo - 1L) * pageSize;
+        long limit = pageSize;
 
         int index = this.findMainFROM(originalSql);
         if (index == -1) {
@@ -55,8 +55,8 @@ public class SybaseDialect extends AbstractDialect {
         tempSql = tempSql.replace("\n", " ").replace("\t", " ").replace("\r", " ");
         Matcher select_ = Pattern.compile("SELECT ").matcher(tempSql);
         Matcher from_ = Pattern.compile(" FROM ").matcher(tempSql);
-        List<Integer> selectIndex = new ArrayList(10);
-        ArrayList fromIndex = new ArrayList(10);
+        List<Integer> selectIndex = new ArrayList<>(10);
+        ArrayList<Integer> fromIndex = new ArrayList<>(10);
 
         while (true) {
             int start;

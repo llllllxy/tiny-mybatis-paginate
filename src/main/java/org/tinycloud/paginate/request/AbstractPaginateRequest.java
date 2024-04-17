@@ -13,12 +13,12 @@ public abstract class AbstractPaginateRequest implements Paginate {
     /**
      * 分页当前页码
      */
-    protected int pageNumber;
+    protected long pageNumber;
 
     /**
      * 分页每页条数
      */
-    protected int pageSize;
+    protected long pageSize;
 
     /**
      * 抽象分页请求对象构造函数
@@ -26,12 +26,12 @@ public abstract class AbstractPaginateRequest implements Paginate {
      * @param pageNumber 当前分页页码
      * @param pageSize   当前分页每页条数
      */
-    public AbstractPaginateRequest(int pageNumber, int pageSize) {
-        if (pageNumber < 1) {
-            throw new PaginateException("当前页码不能小于1!");
+    public AbstractPaginateRequest(long pageNumber, long pageSize) {
+        if (pageNumber < 1L) {
+            throw new PaginateException("The pageNumber cannot be less than 1!");
         }
-        if (pageSize < 1) {
-            throw new PaginateException("每页条数不能小于1!");
+        if (pageSize < 1L) {
+            throw new PaginateException("The pageSize cannot be less than 1!");
         }
         this.pageNumber = pageNumber;
         this.pageSize = pageSize;
@@ -48,7 +48,7 @@ public abstract class AbstractPaginateRequest implements Paginate {
      * @return 当前分页页码
      */
     @Override
-    public int getPageNumber() {
+    public long getPageNumber() {
         return this.pageNumber;
     }
 
@@ -58,7 +58,7 @@ public abstract class AbstractPaginateRequest implements Paginate {
      * @return 每页条数
      */
     @Override
-    public int getPageSize() {
+    public long getPageSize() {
         return this.pageSize;
     }
 
@@ -78,7 +78,7 @@ public abstract class AbstractPaginateRequest implements Paginate {
      * @return 每页条数
      */
     @Override
-    public int getLimit() {
+    public long getLimit() {
         return this.pageSize;
     }
 
@@ -89,6 +89,6 @@ public abstract class AbstractPaginateRequest implements Paginate {
      */
     @Override
     public long getEndRow() {
-        return (long) this.pageNumber * this.pageSize;
+        return this.pageNumber * this.pageSize;
     }
 }

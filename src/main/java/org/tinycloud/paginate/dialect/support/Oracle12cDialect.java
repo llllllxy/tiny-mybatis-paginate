@@ -13,12 +13,12 @@ public class Oracle12cDialect extends AbstractDialect {
      */
     @Override
     public String getPageSql(String oldSQL, Page<?> page) {
-        Integer pageNum = page.getPageNum();
-        Integer pageSize = page.getPageSize();
+        long pageNum = page.getPageNum();
+        long pageSize = page.getPageSize();
         StringBuilder sql = new StringBuilder();
 
-        int offset = (pageNum - 1) * pageSize;
-        int limit = pageSize;
+        long offset = (pageNum - 1L) * pageSize;
+        long limit = pageSize;
         sql.append(oldSQL);
         sql.append(" OFFSET ");
         sql.append(offset);

@@ -19,10 +19,10 @@ public class SqlServer2005Dialect extends AbstractDialect {
      */
     @Override
     public String getPageSql(String originalSql, Page<?> page) {
-        Integer pageNo = page.getPageNum();
-        Integer pageSize = page.getPageSize();
-        int offset = (pageNo - 1) * pageSize;
-        int limit = pageSize;
+        long pageNo = page.getPageNum();
+        long pageSize = page.getPageSize();
+        long offset = (pageNo - 1L) * pageSize;
+        long limit = pageSize;
 
         StringBuilder pagingBuilder = new StringBuilder();
         String orderby = this.getOrderByPart(originalSql);

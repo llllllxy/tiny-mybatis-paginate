@@ -76,7 +76,7 @@ public class MyBatisPaginateInterceptor implements Interceptor {
         Page<?> page = PageRequestHolder.getPageLocal();
 
         // 执行查询总记录数的sql
-        int count = executeCount(boundSql, statement);
+        long count = executeCount(boundSql, statement);
         page.setTotal(count);
 
         // 执行分页查询的sql
@@ -153,27 +153,27 @@ public class MyBatisPaginateInterceptor implements Interceptor {
      * @param mappedStatement MappedStatement
      * @return totalRecord 总记录数
      */
-    private int executeCount(BoundSql boundSql, MappedStatement mappedStatement) throws SQLException {
+    private long executeCount(BoundSql boundSql, MappedStatement mappedStatement) throws SQLException {
         Object parameterObject = boundSql.getParameterObject();
         String sql = boundSql.getSql().trim();
         String countSql = dialectImpl.getCountSql(sql);
 
-        //获取相关配置
+        // 获取相关配置
         Configuration config = mappedStatement.getConfiguration();
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
-        int totalRecord = 0;
+        long totalRecord = 0L;
         try {
             connection = config.getEnvironment().getDataSource().getConnection();
             preparedStatement = connection.prepareStatement(countSql);
             this.setParameters(preparedStatement, mappedStatement, boundSql, parameterObject);
             resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                totalRecord = resultSet.getInt(1);
+                totalRecord = resultSet.getLong(1);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error(this.getClass().getName() + "executeCount SQLException: of statement " + mappedStatement.getId(), e);
         } finally {
             try {
                 if (resultSet != null) {

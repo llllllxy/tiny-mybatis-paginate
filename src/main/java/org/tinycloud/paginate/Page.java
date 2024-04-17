@@ -16,22 +16,22 @@ public class Page<T> implements Serializable {
     /**
      * 当前页码（pageNo = offset / limit + 1;）
      */
-    private Integer pageNum;
+    private long pageNum;
 
     /**
      * 分页大小（等价于limit）
      */
-    private Integer pageSize;
+    private long pageSize;
 
     /**
      * 总记录数
      */
-    private Integer total;
+    private long total;
 
     /**
      * 总页数
      */
-    private Integer pages;
+    private long pages;
 
     /**
      * 分页后的数据
@@ -42,12 +42,12 @@ public class Page<T> implements Serializable {
 
     }
 
-    public Page(Integer pageNum, Integer pageSize) {
+    public Page(long pageNum, long pageSize) {
         this.pageSize = pageSize;
         this.pageNum = pageNum;
     }
 
-    public Page(Collection<T> records, int total, Integer pageNum, Integer pageSize) {
+    public Page(Collection<T> records, long total, long pageNum, long pageSize) {
         this.records = (records == null ? new ArrayList<T>() : records);
         this.total = total;
         this.pageSize = pageSize;
@@ -55,45 +55,45 @@ public class Page<T> implements Serializable {
         this.pages = (total + pageSize - 1) / pageSize;
     }
 
-    public Integer getPageNum() {
-        return pageNum;
+    public long getPageNum() {
+        return this.pageNum;
     }
 
-    public void setPageNum(Integer pageNum) {
+    public void setPageNum(long pageNum) {
         this.pageNum = pageNum;
     }
 
-    public Integer getPageSize() {
-        return pageSize;
+    public long getPageSize() {
+        return this.pageSize;
     }
 
-    public void setPageSize(Integer pageSize) {
+    public void setPageSize(long pageSize) {
         this.pageSize = pageSize;
     }
 
-    public Integer getPages() {
-        return pages;
+    public long getPages() {
+        return this.pages;
     }
 
-    public void setPages(Integer pages) {
+    public void setPages(long pages) {
         this.pages = pages;
     }
 
     public Collection<T> getRecords() {
-        return records;
+        return this.records;
     }
 
     public void setRecords(Collection<T> records) {
         this.records = records;
     }
 
-    public Integer getTotal() {
-        return total;
+    public long getTotal() {
+        return this.total;
     }
 
-    public void setTotal(Integer total) {
+    public void setTotal(long total) {
         this.total = total;
-        this.pages = (total + pageSize - 1) / pageSize;
+        this.pages = (total + this.pageSize - 1L) / this.pageSize;
     }
 
     /**
@@ -111,7 +111,7 @@ public class Page<T> implements Serializable {
      * @return true：存在上一页，false：不存在
      */
     public boolean hasPreviousPage() {
-        return this.getPageNum() > 1;
+        return this.getPageNum() > 1L;
     }
 
     /**
@@ -120,7 +120,7 @@ public class Page<T> implements Serializable {
      * @return true：首页，false：非首页
      */
     public boolean firstPage() {
-        return this.getPageNum() == 1;
+        return this.getPageNum() == 1L;
     }
 
     /**
@@ -129,7 +129,7 @@ public class Page<T> implements Serializable {
      * @return true：为末页，false：非末页
      */
     public boolean lastPage() {
-        return this.getPages().equals(this.getPageNum());
+        return this.getPages() == this.getPageNum();
     }
 
     @Override
