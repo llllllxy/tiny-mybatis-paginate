@@ -54,7 +54,7 @@
     <dependency>
         <groupId>top.lxyccc</groupId>
         <artifactId>tiny-mybatis-paginate</artifactId>
-        <version>1.0.1</version>
+        <version>1.1.0</version>
     </dependency>
 ```
 
