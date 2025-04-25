@@ -174,7 +174,7 @@ public class DialectUtils {
             return DialectEnum.REDSHIFT;
         } else if (jdbcUrl.contains(":opengauss:")) {
             return DialectEnum.OPENGAUSS;
-        } else if (jdbcUrl.contains(":taos:") || jdbcUrl.contains(":taos-rs:")) {
+        } else if (jdbcUrl.contains(":taos:") || jdbcUrl.contains(":taos-rs:") || jdbcUrl.contains(":taos-ws:")) {
             return DialectEnum.TDENGINE;
         } else if (jdbcUrl.contains(":informix")) {
             return DialectEnum.INFORMIX;
