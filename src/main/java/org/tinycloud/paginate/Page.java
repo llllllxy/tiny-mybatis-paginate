@@ -2,7 +2,7 @@ package org.tinycloud.paginate;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 /**
  * 分页对象，支持pageNum-pageSize模式
@@ -36,7 +36,7 @@ public class Page<T> implements Serializable {
     /**
      * 分页后的数据
      */
-    private Collection<T> records;
+    private List<T> records;
 
     public Page() {
 
@@ -47,7 +47,7 @@ public class Page<T> implements Serializable {
         this.pageNum = pageNum;
     }
 
-    public Page(Collection<T> records, long total, long pageNum, long pageSize) {
+    public Page(List<T> records, long total, long pageNum, long pageSize) {
         this.records = (records == null ? new ArrayList<T>() : records);
         this.total = total;
         this.pageSize = pageSize;
@@ -79,11 +79,11 @@ public class Page<T> implements Serializable {
         this.pages = pages;
     }
 
-    public Collection<T> getRecords() {
+    public List<T> getRecords() {
         return this.records;
     }
 
-    public void setRecords(Collection<T> records) {
+    public void setRecords(List<T> records) {
         this.records = records;
     }
 

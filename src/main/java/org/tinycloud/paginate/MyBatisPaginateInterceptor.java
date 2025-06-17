@@ -26,7 +26,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
 
@@ -81,7 +80,7 @@ public class MyBatisPaginateInterceptor implements Interceptor {
 
         // 执行分页查询的sql
         Object result = executePage(page, invocation);
-        page.setRecords((Collection) result);
+        page.setRecords((List) result);
 
         return result;
     }
