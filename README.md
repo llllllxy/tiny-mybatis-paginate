@@ -54,7 +54,7 @@
     <dependency>
         <groupId>top.lxyccc</groupId>
         <artifactId>tiny-mybatis-paginate</artifactId>
-        <version>1.1.0</version>
+        <version>1.1.1</version>
     </dependency>
 ```
 
@@ -66,6 +66,8 @@
     <plugin interceptor="org.tinycloud.paginate.MyBatisPaginateInterceptor">
         <!-- 配置数据库方言，不配置的话会根据jdbcUrl自动适配 -->
         <property name="dialect" value="mysql"/>
+        <!-- 是否运行时动态识别数据库方言，默认false；AbstractRoutingDataSource后面挂不同类型数据库时建议开启 -->
+        <property name="openRuntimeDbType" value="false"/>
 	</plugin>
 </plugins>
 ```
@@ -81,6 +83,7 @@
           <!-- 配置数据库方言，不配置的话会根据jdbcUrl自动适配 -->
           <value>
             dialect=mysql
+            openRuntimeDbType=false
           </value>
         </property>
       </bean>
@@ -116,6 +119,11 @@ public class MybatisInterceptorConfig {
          * 配置数据库方言，不配置的话会根据jdbcUrl自动适配（不支持自动选择sqlserver2012，只能使用sqlserver）
          */
         pageProperties.setProperty("dialect", "mysql");
+        /*
+         * 是否运行时动态识别数据库方言，默认false；
+         * 使用AbstractRoutingDataSource且不同路由目标是不同数据库类型时，可设置为true。
+         */
+        pageProperties.setProperty("openRuntimeDbType", "false");
         pageInterceptor.setProperties(pageProperties);
 
         for (SqlSessionFactory sqlSessionFactory : sqlSessionFactoryList) {
@@ -128,12 +136,18 @@ public class MybatisInterceptorConfig {
 }
 ```
 
+#### openRuntimeDbType说明
+- `openRuntimeDbType`默认值为`false`，插件会缓存第一次解析到的数据库方言，适合单数据源或同类型多数据源，性能更好。
+- 当项目使用`AbstractRoutingDataSource`等动态数据源，并且不同路由目标连接的是不同类型数据库（例如MySQL、Oracle混用）时，建议设置为`true`，插件会在每次分页时根据当前路由后的数据源重新识别数据库方言。
+- 开启`openRuntimeDbType=true`后，插件会优先根据当前路由后的数据源重新识别方言；如果实时识别失败，则回退使用`dialect`配置的默认方言。
+
 ## 3、使用方法
 ```java
 // pageNumber pageSize模式
 Page<SysLoginLog> page = PaginateRequest.of(1, 10).request(() -> loginLogMapper.pageList(param));
 
-或者
+// 或者
+
 // offset limit模式
 Page<SysLoginLog> page = PaginateRequest.in(0, 10).request(() -> loginLogMapper.pageList(param));
 ```
