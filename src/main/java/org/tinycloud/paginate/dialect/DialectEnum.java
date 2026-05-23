@@ -34,15 +34,15 @@ public enum DialectEnum {
     /**
      * H2
      */
-    H2("h2", HsqlDialect.class),
+    H2("h2", PostgresDialect.class),
     /**
      * HSQL
      */
-    HSQL("hsql", HsqlDialect.class),
+    HSQL("hsql", PostgresDialect.class),
     /**
      * SQLITE
      */
-    SQLITE("sqlite", HsqlDialect.class),
+    SQLITE("sqlite", PostgresDialect.class),
     /**
      * POSTGRE
      */
@@ -70,11 +70,15 @@ public enum DialectEnum {
     /**
      * Phoenix
      */
-    PHOENIX("phoenix", HsqlDialect.class),
+    PHOENIX("phoenix", PostgresDialect.class),
     /**
      * Gauss
      */
     GAUSS("gauss", OracleDialect.class),
+    /**
+     * 华为云GaussDB数据库
+     */
+    GAUSS_DB("gaussDB", GaussDBDialect.class),
     /**
      * ClickHouse
      */
@@ -87,6 +91,24 @@ public enum DialectEnum {
      * GBase-8s
      */
     GBASE_8S("gbase-8s", GBase8sDialect.class),
+    /**
+     * GBase8sPG
+     */
+    GBASE8S_PG("gbase8s-pg", PostgresDialect.class),
+    /**
+     * GBase8s
+     */
+    @Deprecated
+    GBASE_INFORMIX("gbase 8s", GBase8sDialect.class),
+    /**
+     * gbasedbt
+     */
+    @Deprecated
+    GBASEDBT("gbasedbt", GBase8sDialect.class),
+    /**
+     * GBase8c
+     */
+    GBASE_8C("gbase-8c", PostgresDialect.class),
     /**
      * Oscar
      */
@@ -106,16 +128,19 @@ public enum DialectEnum {
     /**
      * derby
      */
-    DERBY("derby", MySqlDialect.class),
+    DERBY("derby", Oracle12cDialect.class),
     /**
      * HighGo
      */
-    HIGH_GO("highgo", HsqlDialect.class),
+    HIGH_GO("highgo", PostgresDialect.class),
     /**
      * CUBRID
      */
     CUBRID("cubrid", MySqlDialect.class),
-
+    /**
+     * SUNDB
+     */
+    SUNDB("sundb", MySqlDialect.class),
     /**
      * GOLDILOCKS
      */
@@ -125,17 +150,17 @@ public enum DialectEnum {
      */
     CSIIDB("csiidb", MySqlDialect.class),
     /**
-     * CSIIDB
+     * SAP_HANA
      */
-    SAP_HANA("hana", MySqlDialect.class),
+    SAP_HANA("hana", PostgresDialect.class),
     /**
      * Impala
      */
-    IMPALA("impala", HsqlDialect.class),
+    IMPALA("impala", PostgresDialect.class),
     /**
      * Vertica
      */
-    VERTICA("vertica", HsqlDialect.class),
+    VERTICA("vertica", PostgresDialect.class),
     /**
      * 东方国信 xcloud
      */
@@ -143,7 +168,7 @@ public enum DialectEnum {
     /**
      * redshift
      */
-    REDSHIFT("redshift", HsqlDialect.class),
+    REDSHIFT("redshift", PostgresDialect.class),
     /**
      * openGauss
      */
@@ -151,7 +176,7 @@ public enum DialectEnum {
     /**
      * TDengine
      */
-    TDENGINE("TDengine", HsqlDialect.class),
+    TDENGINE("TDengine", PostgresDialect.class),
     /**
      * Informix
      */
@@ -163,15 +188,47 @@ public enum DialectEnum {
     /**
      * uxdb
      */
-    UXDB("uxdb", HsqlDialect.class),
+    UXDB("uxdb", PostgresDialect.class),
     /**
      * greenplum
      */
     GREENPLUM("greenplum", PostgresDialect.class),
     /**
+     * trino
+     */
+    TRINO("trino", TrinoDialect.class),
+    /**
+     * lealone
+     */
+    LEALONE("lealone", PostgresDialect.class),
+    /**
+     * presto
+     */
+    PRESTO("Presto", TrinoDialect.class),
+    /**
+     * goldendb
+     */
+    GOLDENDB("goldendb", MySqlDialect.class),
+    /**
+     * yasdb
+     */
+    YASDB("yasdb", MySqlDialect.class),
+    /**
+     * vastbase
+     */
+    VASTBASE("vastbase", PostgresDialect.class),
+    /**
+     * duckdb
+     */
+    DUCKDB("duckdb", PostgresDialect.class),
+    /**
+     * hive2
+     */
+    HIVE2("hive2", PostgresDialect.class),
+    /**
      * UNKNOWN DB
      */
-    OTHER("other", MySqlDialect.class);
+    OTHER("other", PostgresDialect.class);
 
     /**
      * 数据库名称
@@ -183,26 +240,42 @@ public enum DialectEnum {
      */
     private final Class<? extends Dialect> value;
 
-    public String getName() {
-        return name;
-    }
-
-    public Class<? extends Dialect> getValue() {
-        return value;
-    }
-
     DialectEnum(String name, Class<? extends Dialect> value) {
         this.name = name;
         this.value = value;
     }
 
+    /**
+     * 获取数据库名称
+     *
+     * @return 数据库名称
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * 获取数据库方言实现类
+     *
+     * @return 数据库方言实现类
+     */
+    public Class<? extends Dialect> getValue() {
+        return value;
+    }
+
+    /**
+     * 根据数据库名称获取对应的方言实现类
+     *
+     * @param name 数据库名称
+     * @return 方言实现类
+     */
     public static Class<? extends Dialect> getDialect(String name) {
         DialectEnum[] enums = values();
         for (DialectEnum item : enums) {
-            if (item.name.equals(name)) {
+            if (item.name.equalsIgnoreCase(name)) {
                 return item.value;
             }
         }
-        return MYSQL.value;
+        return OTHER.value;
     }
 }

@@ -30,10 +30,10 @@ public class DialectUtils {
         try {
             // 如果没有传递枚举参数，则自动根据数据库
             if (dialect == null || dialect.isEmpty()) {
-                return getDialectEnum(statement).getValue().newInstance();
+                return getDialectEnum(statement).getValue().getDeclaredConstructor().newInstance();
             }
             // 反射获取方言实现实例
-            return DialectEnum.getDialect(dialect).newInstance();
+            return DialectEnum.getDialect(dialect).getDeclaredConstructor().newInstance();
         }
         // 遇到异常后抛出方言暂未支持异常
         catch (Exception e) {
@@ -47,11 +47,7 @@ public class DialectUtils {
     public static DialectEnum getDialectEnum(MappedStatement statement) {
         // 获取数据源
         DataSource dataSource = statement.getConfiguration().getEnvironment().getDataSource();
-        String jdbcUrl = getJdbcUrl(dataSource);
-        if (!StrUtils.isEmpty(jdbcUrl)) {
-            return parseDialectEnum(jdbcUrl);
-        }
-        throw new IllegalStateException("Can not get dataSource jdbcUrl: " + dataSource.getClass().getName());
+        return getDialectEnum(dataSource);
     }
 
 
@@ -140,10 +136,16 @@ public class DialectUtils {
             return DialectEnum.PHOENIX;
         } else if (jdbcUrl.contains(":zenith:")) {
             return DialectEnum.GAUSS;
+        } else if (jdbcUrl.contains(":gaussdb:")) {
+            return DialectEnum.GAUSS_DB;
         } else if (jdbcUrl.contains(":gbase:")) {
             return DialectEnum.GBASE;
         } else if (jdbcUrl.contains(":gbasedbt-sqli:") || jdbcUrl.contains(":informix-sqli:")) {
             return DialectEnum.GBASE_8S;
+        } else if (jdbcUrl.contains(":gbase8s-pg:")) {
+            return DialectEnum.GBASE8S_PG;
+        } else if (jdbcUrl.contains(":gbase8c:")) {
+            return DialectEnum.GBASE_8C;
         } else if (jdbcUrl.contains(":ch:") || jdbcUrl.contains(":clickhouse:")) {
             return DialectEnum.CLICK_HOUSE;
         } else if (jdbcUrl.contains(":oscar:")) {
@@ -156,6 +158,8 @@ public class DialectUtils {
             return DialectEnum.HIGH_GO;
         } else if (jdbcUrl.contains(":cubrid:")) {
             return DialectEnum.CUBRID;
+        } else if (jdbcUrl.contains(":sundb:")) {
+            return DialectEnum.SUNDB;
         } else if (jdbcUrl.contains(":goldilocks:")) {
             return DialectEnum.GOLDILOCKS;
         } else if (jdbcUrl.contains(":csiidb:")) {
@@ -184,6 +188,22 @@ public class DialectUtils {
             return DialectEnum.UXDB;
         } else if (jdbcUrl.contains(":greenplum:")) {
             return DialectEnum.GREENPLUM;
+        } else if (jdbcUrl.contains(":trino:")) {
+            return DialectEnum.TRINO;
+        } else if (jdbcUrl.contains(":presto:")) {
+            return DialectEnum.PRESTO;
+        } else if (jdbcUrl.contains(":derby:")) {
+            return DialectEnum.DERBY;
+        } else if (jdbcUrl.contains(":vastbase:")) {
+            return DialectEnum.VASTBASE;
+        } else if (jdbcUrl.contains(":duckdb:")) {
+            return DialectEnum.DUCKDB;
+        } else if (jdbcUrl.contains(":goldendb:")) {
+            return DialectEnum.GOLDENDB;
+        } else if (jdbcUrl.contains(":yasdb:")) {
+            return DialectEnum.YASDB;
+        } else if (jdbcUrl.contains(":hive2:") || jdbcUrl.contains(":inceptor2:")) {
+            return DialectEnum.HIVE2;
         } else {
             logger.warn("The jdbcUrl " + jdbcUrl + ", cannot parse DialectEnum or the database is not supported!");
             return DialectEnum.OTHER;

@@ -1,32 +1,26 @@
 package org.tinycloud.paginate;
 
 import org.apache.ibatis.cache.CacheKey;
-import org.apache.ibatis.executor.ErrorContext;
 import org.apache.ibatis.executor.Executor;
-import org.apache.ibatis.executor.ExecutorException;
 import org.apache.ibatis.mapping.*;
 import org.apache.ibatis.plugin.*;
 import org.apache.ibatis.reflection.DefaultReflectorFactory;
 import org.apache.ibatis.reflection.MetaObject;
 import org.apache.ibatis.reflection.factory.DefaultObjectFactory;
-import org.apache.ibatis.reflection.property.PropertyTokenizer;
 import org.apache.ibatis.reflection.wrapper.DefaultObjectWrapperFactory;
-import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.ResultHandler;
+import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.RowBounds;
-import org.apache.ibatis.type.TypeHandler;
-import org.apache.ibatis.type.TypeHandlerRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.tinycloud.paginate.dialect.Dialect;
 import org.tinycloud.paginate.utils.DialectUtils;
 import org.tinycloud.paginate.utils.PageRequestHolder;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 
@@ -46,6 +40,11 @@ public class MyBatisPaginateInterceptor implements Interceptor {
      * 项目配置数据库方言的类名全限定名
      */
     private String dialect;
+
+    /**
+     * 是否运行时动态识别数据库方言，默认关闭
+     */
+    private boolean openRuntimeDbType = false;
 
     /**
      * 缓存数据库方言对象到内存
@@ -69,31 +68,59 @@ public class MyBatisPaginateInterceptor implements Interceptor {
         }
         BoundSql boundSql = statement.getBoundSql(parameterObject);
 
-        if (dialectImpl == null) {
-            dialectImpl = DialectUtils.newInstance(statement, this.dialect);
-        }
+        Dialect currentDialect = this.getDialect(statement);
         Page<?> page = PageRequestHolder.getPageLocal();
 
         // 执行查询总记录数的sql
-        long count = executeCount(boundSql, statement);
+        Executor executor = (Executor) invocation.getTarget();
+        long count = executeCount(boundSql, statement, currentDialect, executor);
         page.setTotal(count);
+        if (count <= 0L) {
+            List<?> emptyRecords = Collections.emptyList();
+            page.setRecords((List) emptyRecords);
+            return emptyRecords;
+        }
 
         // 执行分页查询的sql
-        Object result = executePage(page, invocation);
+        Object result = executePage(page, invocation, currentDialect);
         page.setRecords((List) result);
 
         return result;
     }
 
     /**
+     * 获取当前查询使用的数据库方言
+     *
+     * @param statement MappedStatement
+     * @return 数据库方言实现
+     */
+    private Dialect getDialect(MappedStatement statement) {
+        if (this.openRuntimeDbType) {
+            try {
+                return DialectUtils.newInstance(statement, null);
+            } catch (RuntimeException e) {
+                if (this.dialect != null && !this.dialect.isEmpty()) {
+                    return DialectUtils.newInstance(statement, this.dialect);
+                }
+                throw e;
+            }
+        }
+        if (this.dialectImpl == null) {
+            this.dialectImpl = DialectUtils.newInstance(statement, this.dialect);
+        }
+        return this.dialectImpl;
+    }
+
+    /**
      * 执行分页查询
      *
-     * @param page       分页参数对象
-     * @param invocation Invocation
+     * @param page        分页参数对象
+     * @param invocation  Invocation
+     * @param dialectImpl 数据库方言实现
      * @return 执行结果
      * @throws Throwable 异常
      */
-    private Object executePage(Page<?> page, Invocation invocation) throws Throwable {
+    private Object executePage(Page<?> page, Invocation invocation, Dialect dialectImpl) throws Throwable {
         final Object[] args = invocation.getArgs();
         MappedStatement statement = (MappedStatement) args[0];
         Object parameterObject = null;
@@ -150,89 +177,77 @@ public class MyBatisPaginateInterceptor implements Interceptor {
      *
      * @param boundSql        boundSql
      * @param mappedStatement MappedStatement
+     * @param dialectImpl     数据库方言实现
+     * @param executor        MyBatis执行器
      * @return totalRecord 总记录数
      */
-    private long executeCount(BoundSql boundSql, MappedStatement mappedStatement) throws SQLException {
+    private long executeCount(BoundSql boundSql, MappedStatement mappedStatement, Dialect dialectImpl, Executor executor) throws SQLException {
         Object parameterObject = boundSql.getParameterObject();
         String sql = boundSql.getSql().trim();
         String countSql = dialectImpl.getCountSql(sql);
 
-        // 获取相关配置
-        Configuration config = mappedStatement.getConfiguration();
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
         long totalRecord = 0L;
         try {
-            connection = config.getEnvironment().getDataSource().getConnection();
-            preparedStatement = connection.prepareStatement(countSql);
-            this.setParameters(preparedStatement, mappedStatement, boundSql, parameterObject);
-            resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                totalRecord = resultSet.getLong(1);
+            Configuration configuration = mappedStatement.getConfiguration();
+            BoundSql countBoundSql = newCountBoundSql(configuration, boundSql, countSql);
+            MappedStatement countStatement = newCountMappedStatement(mappedStatement);
+            CacheKey countKey = executor.createCacheKey(countStatement, parameterObject, RowBounds.DEFAULT, countBoundSql);
+            List<Object> countResult = executor.query(countStatement, parameterObject, RowBounds.DEFAULT, null, countKey, countBoundSql);
+            if (countResult != null && !countResult.isEmpty()) {
+                Object count = countResult.get(0);
+                if (count instanceof Number) {
+                    totalRecord = ((Number) count).longValue();
+                }
             }
         } catch (SQLException e) {
             logger.error(this.getClass().getName() + "executeCount SQLException: of statement " + mappedStatement.getId(), e);
-        } finally {
-            try {
-                if (resultSet != null) {
-                    resultSet.close();
-                }
-                if (preparedStatement != null) {
-                    preparedStatement.close();
-                }
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
         return totalRecord;
     }
 
     /**
-     * 参数设置器，可以设置映射参数
+     * 创建总记录数查询使用的BoundSql
+     *
+     * @param configuration MyBatis配置对象
+     * @param boundSql      原始BoundSql
+     * @param countSql      总记录数SQL
+     * @return 总记录数查询使用的BoundSql
      */
-    private void setParameters(PreparedStatement ps, MappedStatement mappedStatement, BoundSql boundSql, Object parameterObject) throws SQLException {
-        ErrorContext.instance().activity("setting parameters").object(mappedStatement.getParameterMap().getId());
-        List<ParameterMapping> parameterMappings = boundSql.getParameterMappings();
-        if (parameterMappings != null) {
-            Configuration configuration = mappedStatement.getConfiguration();
-            TypeHandlerRegistry typeHandlerRegistry = configuration.getTypeHandlerRegistry();
-            MetaObject metaObject = parameterObject == null ? null : configuration.newMetaObject(parameterObject);
-
-            for (int i = 0; i < parameterMappings.size(); ++i) {
-                ParameterMapping parameterMapping = (ParameterMapping) parameterMappings.get(i);
-                if (parameterMapping.getMode() != ParameterMode.OUT) {
-                    String propertyName = parameterMapping.getProperty();
-                    PropertyTokenizer prop = new PropertyTokenizer(propertyName);
-                    Object value;
-                    if (parameterObject == null) {
-                        value = null;
-                    } else if (typeHandlerRegistry.hasTypeHandler(parameterObject.getClass())) {
-                        value = parameterObject;
-                    } else if (boundSql.hasAdditionalParameter(propertyName)) {
-                        value = boundSql.getAdditionalParameter(propertyName);
-                    } else if (propertyName.startsWith("__frch_") && boundSql.hasAdditionalParameter(prop.getName())) {
-                        value = boundSql.getAdditionalParameter(prop.getName());
-                        if (value != null) {
-                            value = configuration.newMetaObject(value).getValue(propertyName.substring(prop.getName().length()));
-                        }
-                    } else {
-                        value = metaObject == null ? null : metaObject.getValue(propertyName);
-                    }
-
-                    TypeHandler typeHandler = parameterMapping.getTypeHandler();
-                    if (typeHandler == null) {
-                        logger.error(this.getClass().getName() + ": There was no TypeHandler found for parameter " + propertyName + " of statement " + mappedStatement.getId());
-                        throw new ExecutorException("There was no TypeHandler found for parameter " + propertyName + " of statement " + mappedStatement.getId());
-                    }
-
-                    typeHandler.setParameter(ps, i + 1, value, parameterMapping.getJdbcType());
-                }
-            }
+    @SuppressWarnings("unchecked")
+    private BoundSql newCountBoundSql(Configuration configuration, BoundSql boundSql, String countSql) {
+        BoundSql countBoundSql = new BoundSql(configuration, countSql, boundSql.getParameterMappings(), boundSql.getParameterObject());
+        MetaObject metaObject = MetaObject.forObject(boundSql, new DefaultObjectFactory(), new DefaultObjectWrapperFactory(),
+                new DefaultReflectorFactory());
+        Map<String, Object> additionalParameters = (Map<String, Object>) metaObject.getValue("additionalParameters");
+        for (Map.Entry<String, Object> entry : additionalParameters.entrySet()) {
+            countBoundSql.setAdditionalParameter(entry.getKey(), entry.getValue());
         }
+        return countBoundSql;
+    }
+
+    /**
+     * 创建总记录数查询使用的MappedStatement
+     *
+     * @param ms 原始MappedStatement
+     * @return 总记录数查询使用的MappedStatement
+     */
+    private MappedStatement newCountMappedStatement(MappedStatement ms) {
+        Configuration configuration = ms.getConfiguration();
+        ResultMap resultMap = new ResultMap.Builder(configuration, ms.getId() + "_COUNT_RESULT", Long.class,
+                Collections.<ResultMapping>emptyList()).build();
+        MappedStatement.Builder builder =
+                new MappedStatement.Builder(configuration, ms.getId() + "_COUNT", ms.getSqlSource(), SqlCommandType.SELECT);
+        builder.resource(ms.getResource());
+        builder.fetchSize(ms.getFetchSize());
+        builder.statementType(ms.getStatementType());
+        builder.timeout(ms.getTimeout());
+        builder.parameterMap(ms.getParameterMap());
+        builder.resultMaps(Collections.singletonList(resultMap));
+        builder.resultSetType(ms.getResultSetType());
+        builder.cache(ms.getCache());
+        builder.flushCacheRequired(false);
+        builder.useCache(ms.isUseCache());
+        return builder.build();
     }
 
 
@@ -257,6 +272,8 @@ public class MyBatisPaginateInterceptor implements Interceptor {
     public void setProperties(Properties properties) {
         // 设置传递的数据库方言
         this.dialect = properties.getProperty("dialect");
+        // 设置是否运行时动态识别数据库方言
+        this.openRuntimeDbType = Boolean.parseBoolean(properties.getProperty("openRuntimeDbType", "false"));
     }
 
 }

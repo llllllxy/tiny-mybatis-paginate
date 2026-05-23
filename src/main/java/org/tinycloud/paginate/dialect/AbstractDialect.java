@@ -19,9 +19,9 @@ public abstract class AbstractDialect implements Dialect {
     @Override
     public String getCountSql(String oldSQL) {
         StringBuilder sql = new StringBuilder();
-        sql.append("SELECT COUNT(0) FROM ( ");
+        sql.append("SELECT COUNT(*) FROM ( ");
         sql.append(oldSQL);
-        sql.append(" ) TEMP_COUNT");
+        sql.append(" ) TEMP");
         return sql.toString();
     }
 }
