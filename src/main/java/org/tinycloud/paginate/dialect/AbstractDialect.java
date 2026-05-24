@@ -1,5 +1,7 @@
 package org.tinycloud.paginate.dialect;
 
+import org.tinycloud.paginate.utils.SqlOrderByUtils;
+
 /**
  * <p>
  * 数据库方言-抽象类实现
@@ -18,9 +20,11 @@ public abstract class AbstractDialect implements Dialect {
      */
     @Override
     public String getCountSql(String oldSQL) {
+        // 移除sql中的order by，优化性能
+        String countSourceSql = SqlOrderByUtils.removeOuterOrderBy(oldSQL);
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT COUNT(*) FROM ( ");
-        sql.append(oldSQL);
+        sql.append(countSourceSql);
         sql.append(" ) TEMP");
         return sql.toString();
     }
