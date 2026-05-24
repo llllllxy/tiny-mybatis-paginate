@@ -14,6 +14,8 @@ import org.apache.ibatis.session.RowBounds;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.tinycloud.paginate.dialect.Dialect;
+import org.tinycloud.paginate.exception.PaginateException;
+import org.tinycloud.paginate.utils.BoundSqlSqlSource;
 import org.tinycloud.paginate.utils.DialectUtils;
 import org.tinycloud.paginate.utils.PageRequestHolder;
 
@@ -199,10 +201,11 @@ public class MyBatisPaginateInterceptor implements Interceptor {
                     totalRecord = ((Number) count).longValue();
                 }
             }
+            return totalRecord;
         } catch (SQLException e) {
             logger.error(this.getClass().getName() + "executeCount SQLException: of statement " + mappedStatement.getId(), e);
+            throw new PaginateException("执行分页count查询失败，statementId：" + mappedStatement.getId(), e);
         }
-        return totalRecord;
     }
 
     /**
@@ -276,21 +279,4 @@ public class MyBatisPaginateInterceptor implements Interceptor {
         this.openRuntimeDbType = Boolean.parseBoolean(properties.getProperty("openRuntimeDbType", "false"));
     }
 
-}
-
-
-/**
- * 新的SqlSource需要实现
- */
-class BoundSqlSqlSource implements SqlSource {
-    private BoundSql boundSql;
-
-    public BoundSqlSqlSource(BoundSql boundSql) {
-        this.boundSql = boundSql;
-    }
-
-    @Override
-    public BoundSql getBoundSql(Object parameterObject) {
-        return boundSql;
-    }
 }
