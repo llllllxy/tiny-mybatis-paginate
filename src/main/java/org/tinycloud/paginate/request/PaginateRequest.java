@@ -1,6 +1,7 @@
 package org.tinycloud.paginate.request;
 
 import org.tinycloud.paginate.Page;
+import org.tinycloud.paginate.exception.PaginateException;
 import org.tinycloud.paginate.utils.LogicFunction;
 import org.tinycloud.paginate.utils.PageRequestHolder;
 
@@ -38,6 +39,12 @@ public class PaginateRequest extends AbstractPaginateRequest {
      * @return 获取分页请求对象实例
      */
     public static Paginate in(long offset, long limit) {
+        if (offset < 0L) {
+            throw new PaginateException("The offset cannot be less than 0!");
+        }
+        if (limit < 1L) {
+            throw new PaginateException("The limit cannot be less than 1!");
+        }
         long pageSize = limit;
         long pageNumber = offset / limit + 1L;
         return new PaginateRequest(pageNumber, pageSize);
