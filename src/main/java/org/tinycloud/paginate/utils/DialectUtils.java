@@ -56,7 +56,7 @@ public class DialectUtils {
      */
     public static DialectEnum getDialectEnum(DataSource dataSource) {
         String jdbcUrl = getJdbcUrl(dataSource);
-        if (!StrUtils.isEmpty(jdbcUrl)) {
+        if (jdbcUrl != null && !jdbcUrl.isEmpty()) {
             return parseDialectEnum(jdbcUrl);
         }
         throw new IllegalStateException("Can not get dataSource jdbcUrl: " + dataSource.getClass().getName());
@@ -102,7 +102,7 @@ public class DialectUtils {
      * @return 返回数据库类型
      */
     public static DialectEnum parseDialectEnum(String jdbcUrl) {
-        if (StrUtils.isEmpty(jdbcUrl)) {
+        if (jdbcUrl == null || jdbcUrl.isEmpty()) {
             throw new IllegalStateException("The jdbcUrl is null, cannot parse DialectEnum!");
         }
         jdbcUrl = jdbcUrl.toLowerCase();

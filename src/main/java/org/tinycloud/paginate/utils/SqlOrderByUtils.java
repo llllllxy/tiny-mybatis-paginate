@@ -20,7 +20,7 @@ public class SqlOrderByUtils {
      * @return 移除最外层ORDER BY后的SQL
      */
     public static String removeOuterOrderBy(String sql) {
-        if (StrUtils.isBlank(sql)) {
+        if (sql == null || sql.isEmpty()) {
             return sql;
         }
         try {

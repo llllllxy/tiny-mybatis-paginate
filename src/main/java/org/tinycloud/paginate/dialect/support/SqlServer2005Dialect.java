@@ -2,7 +2,6 @@ package org.tinycloud.paginate.dialect.support;
 
 import org.tinycloud.paginate.Page;
 import org.tinycloud.paginate.dialect.AbstractDialect;
-import org.tinycloud.paginate.utils.StrUtils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -39,7 +38,7 @@ public class SqlServer2005Dialect extends AbstractDialect {
         }
 
         pagingBuilder.append(sqlPartString);
-        if (StrUtils.isBlank(orderby)) {
+        if (orderby == null || orderby.isEmpty()) {
             orderby = "ORDER BY CURRENT_TIMESTAMP";
         }
 

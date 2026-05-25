@@ -57,6 +57,7 @@ public class PaginateRequest extends AbstractPaginateRequest {
      * @param <T>           泛型参数
      * @return 执行分页请求
      */
+    @SuppressWarnings("unchecked")
     @Override
     public <T> Page<T> request(LogicFunction logicFunction) {
         try {
